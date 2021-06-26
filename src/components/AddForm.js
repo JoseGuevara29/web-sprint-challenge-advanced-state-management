@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { errorMessage, addSmurf } from "../actions/index";
+import { setError, addSmurf } from "../actions/index";
 import { connect } from "react-redux";
 
 const AddForm = (props) => {
@@ -22,13 +22,13 @@ const AddForm = (props) => {
     e.preventDefault();
     if (state.name === "" || state.position === "" || state.nickname === "") {
       //   errorMessage = "Name, position and nickname fields are required.";
-      props.errorMessage("Name, position and nickname fields are required.");
+      props.setError();
     } else {
       props.addSmurf(state);
     }
   };
 
-    const errorMessage = state.errorMessage
+    // const errorMessage = state.errorMessage
 
 return (
     <section>
@@ -74,13 +74,13 @@ return (
             id="description"
           />
         </div>
-       {errorMessage && (
+       {props.errorMessage && (
           <div
             data-testid="errorAlert"
             className="alert alert-danger"
             role="alert"
           >
-            Error: {errorMessage}
+            Error: {props.errorMessage}
           </div>
         )} 
         <button>Submit Smurf</button>
@@ -88,13 +88,13 @@ return (
     </section>
   );
 };
-const mapStateToProps = (state) => {
-  return {
-    errorMessage: state.error,
-  };
-};
+const mapStateToProps = state => {
+    return({
+        errorMessage: state.error
+    })
+}
 
-export default connect(null,{addSmurf,errorMessage})(AddForm);
+export default  connect(mapStateToProps, {setError, addSmurf})(AddForm);
 //Task List:
 //1. Connect the errorMessage, setError and addSmurf actions to the AddForm component.
 //2. Replace all instances of the errorMessage static variable with your error message state value. 

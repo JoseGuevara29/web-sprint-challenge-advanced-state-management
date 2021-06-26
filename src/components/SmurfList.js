@@ -24,6 +24,7 @@ import { fetchSmurfs } from "../actions/index";
 
   return (
     <div className="listContainer">
+      {props.error ? <p style={{ color: "red" }}>{props.error}</p> : null}
       {props.smurfs.map((smurf) => {
         return <Smurf smurf={smurf} key={smurf.id} />;
       })}

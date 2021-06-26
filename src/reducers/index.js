@@ -3,7 +3,7 @@ import {
   FETCHING_SUCCESS,
   FETCHING_FAILURE,
   ADD_SMURF,
-  ERROR_MESSAGE,
+  SET_ERROR,
 } from "../actions/index";
 
 export const initialState = {
@@ -31,10 +31,10 @@ const reducer = (state = initialState, action)=>{
         smurfs: [...state.smurfs, action.payload],
         isLoading: false,
       };
-    case ERROR_MESSAGE:
-      return({
+    case SET_ERROR:
+            return({
                 ...state,
-                error:action.payload
+                error: "Name, position and nickname fields are required.",
             })
     default:
       return state;
