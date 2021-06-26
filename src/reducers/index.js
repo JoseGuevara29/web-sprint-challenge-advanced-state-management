@@ -3,7 +3,7 @@ import {
   FETCHING_SUCCESS,
   FETCHING_FAILURE,
   ADD_SMURF,
-  SET_ERROR,
+  ERROR_MESSAGE,
 } from "../actions/index";
 
 export const initialState = {
@@ -31,11 +31,11 @@ const reducer = (state = initialState, action)=>{
         smurfs: [...state.smurfs, action.payload],
         isLoading: false,
       };
-    case SET_ERROR:
-      return {
-        isLoading: false,
-        error: "Please complete form!",
-      };
+    case ERROR_MESSAGE:
+      return({
+                ...state,
+                error:action.payload
+            })
     default:
       return state;
   }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { setError, addSmurf } from "../actions/index";
+import { errorMessage, addSmurf } from "../actions/index";
 import { connect } from "react-redux";
 
 const AddForm = (props) => {
@@ -17,53 +17,84 @@ const AddForm = (props) => {
         });
     }
 
-    const handleSubmit = e => {
-        e.preventDefault();
-        if (state.name === "" || state.position === "" || state.nickname === "") {
-    //   errorMessage = "Name, position and nickname fields are required.";
-      props.setError();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (state.name === "" || state.position === "" || state.nickname === "") {
+      //   errorMessage = "Name, position and nickname fields are required.";
+      props.errorMessage("Name, position and nickname fields are required.");
     } else {
       props.addSmurf(state);
     }
-    }
+  };
 
-    // const errorMessage = "";
+    const errorMessage = state.errorMessage
 
-    return(<section>
-        <h2>Add Smurf</h2>
-        <form onSubmit={handleSubmit}>
-            <div className="form-group">
-                <label htmlFor="name">Name:</label><br/>
-                <input onChange={handleChange} value={state.name} name="name" id="name" />
-            </div>
-            <div className="form-group">
-                <label htmlFor="position">Position:</label><br/>
-                <input onChange={handleChange} value={state.position} name="position" id="position" />
-            </div>
-            <div className="form-group">
-                <label htmlFor="nickname">Nickname:</label><br/>
-                <input onChange={handleChange} value={state.nickname} name="nickname" id="nickname" />
-            </div>
-            <div className="form-group">
-                <label htmlFor="description">Description:</label><br/>
-                <textarea onChange={handleChange} value={state.description} name="description" id="description" />
-            </div>
-            {
-                props.errorMessage && <div data-testid="errorAlert" className="alert alert-danger" role="alert">Error: {props.errorMessage}</div>
-            }
-            <button>Submit Smurf</button>
-        </form>
-    </section>);
-}
-
+return (
+    <section>
+      <h2>Add Smurf</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="name">Name:</label>
+          <br />
+          <input
+            onChange={handleChange}
+            value={state.name}
+            name="name"
+            id="name"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="position">Position:</label>
+          <br />
+          <input
+            onChange={handleChange}
+            value={state.position}
+            name="position"
+            id="position"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="nickname">Nickname:</label>
+          <br />
+          <input
+            onChange={handleChange}
+            value={state.nickname}
+            name="nickname"
+            id="nickname"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="description">Description:</label>
+          <br />
+          <textarea
+            onChange={handleChange}
+            value={state.description}
+            name="description"
+            id="description"
+          />
+        </div>
+       {errorMessage && (
+          <div
+            data-testid="errorAlert"
+            className="alert alert-danger"
+            role="alert"
+          >
+            Error: {errorMessage}
+          </div>
+        )} 
+        <button>Submit Smurf</button>
+      </form>
+    </section>
+  );
+};
 const mapStateToProps = (state) => {
   return {
     errorMessage: state.error,
   };
 };
 
-export default connect(mapStateToProps, { setError, addSmurf })(AddForm);
-
+export default connect(null,{addSmurf,errorMessage})(AddForm);
 //Task List:
 //1. Connect the errorMessage, setError and addSmurf actions to the AddForm component.
 //2. Replace all instances of the errorMessage static variable with your error message state value. 

@@ -18,20 +18,23 @@ import { fetchSmurfs } from "../actions/index";
   }, [props.fetchSmurfs]);
 
 
-    if (props.isLoading) {
-        return <h1>Loading...</h1>;
-    }
+  if (props.isLoading) {
+    return <h1>Loading...</h1>;
+  }
 
-    return(<div className="listContainer">
-        {props.smurfs.map((smurf) => {
+  return (
+    <div className="listContainer">
+      {props.smurfs.map((smurf) => {
         return <Smurf smurf={smurf} key={smurf.id} />;
-      })}    </div>);
-}
+      })}
+    </div>
+  );
+};
 
 const mapStateToProps = (state) => {
   return {
     smurfs: state.smurfs,
-    isLoading: state.loading,
+    isLoading: state.isloading,
   };
 };
 const mapDispatchToProps = { fetchSmurfs };
