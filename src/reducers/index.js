@@ -1,8 +1,44 @@
+import {
+  FETCHING_START,
+  FETCHING_SUCCESS,
+  FETCHING_FAILURE,
+  ADD_SMURF,
+  SET_ERROR,
+} from "../actions/index";
 
 export const initialState = {
+    smurfs: [],
+    isLoading: false,
+    error: "",
 }
 
-const reducer = ()=>{
+const reducer = (state = initialState, action)=>{
+      switch (action.type) {
+    case FETCHING_START:
+      return { ...state, isLoading: true };
+    case FETCHING_SUCCESS:
+      return { ...state, isLoading: false, smurfs: action.payload };
+    case FETCHING_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        error: "Not able to find smurfs" + action.payload,
+      };
+    case ADD_SMURF:
+      console.log("Add smurf asction.payload", action.payload);
+      return {
+        ...state,
+        smurfs: [...state.smurfs, action.payload],
+        isLoading: false,
+      };
+    case SET_ERROR:
+      return {
+        isLoading: false,
+        error: "Please complete form!",
+      };
+    default:
+      return state;
+  }
 }
 
 export default reducer;

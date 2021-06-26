@@ -1,27 +1,42 @@
-import React from 'react';
+import React, { useEffect } from "react";
 import Smurf from './Smurf';
+import { connect } from "react-redux";
+import { fetchSmurfs } from "../actions/index";
 
- const SmurfList = ()=> {
-    const isLoading = false;
-    const testSmurf = {
-        id:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-        name:'Poppa Smurf',
-        position:'Village Leader',
-        nickname: 'Pops',
-        description: 'Papa is the practical village leader and the father figure of 100 or so young Smurfs. He is easily identified by his red Smurf hat, pants, and a shortly-trimmed white beard and moustache.'
-    }
+ const SmurfList = (props)=> {
+    // const isLoading = false;
+    // const testSmurf = {
+    //     id:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+    //     name:'Poppa Smurf',
+    //     position:'Village Leader',
+    //     nickname: 'Pops',
+    //     description: 'Papa is the practical village leader and the father figure of 100 or so young Smurfs. He is easily identified by his red Smurf hat, pants, and a shortly-trimmed white beard and moustache.'
+    // }
+    useEffect(() => {
+    // Fetch a smurf when the component mounts (useEffect with an empty dependency array is like componentDidMount.)
+    props.fetchSmurfs();
+  }, [props.fetchSmurfs]);
 
-    if (isLoading) {
+
+    if (props.isLoading) {
         return <h1>Loading...</h1>;
     }
 
     return(<div className="listContainer">
-        <Smurf smurf={testSmurf}/>
-    </div>);
+        {props.smurfs.map((smurf) => {
+        return <Smurf smurf={smurf} key={smurf.id} />;
+      })}    </div>);
 }
 
-export default SmurfList;
+const mapStateToProps = (state) => {
+  return {
+    smurfs: state.smurfs,
+    isLoading: state.loading,
+  };
+};
+const mapDispatchToProps = { fetchSmurfs };
 
+export default connect(mapStateToProps, mapDispatchToProps)(SmurfList);
 //Task List:
 //1. Connect the smurfs and loading state values to the SmurfList component.
 //2. Replace the single Smurf component instance with a map return a Smurf component for each entry in the smurfs list.
